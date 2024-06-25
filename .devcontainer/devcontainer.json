@@ -6,20 +6,24 @@
     "codespaces": {
       "openFiles": [
         "README.md",
-        "Hello.py"
+        "%s"
       ]
     },
     "vscode": {
-      "settings": {},
+      "settings": {
+        "python.defaultInterpreterPath": "${containerWorkspaceFolder}/.venv/bin/python",
+        "python.terminal.activateEnvInCurrentTerminal": true
+      },
       "extensions": [
         "ms-python.python",
         "ms-python.vscode-pylance"
       ]
     }
   },
-  "updateContentCommand": "[ -f packages.txt ] && sudo apt update && sudo apt upgrade -y && sudo xargs apt install -y <packages.txt; [ -f requirements.txt ] && pip3 install --user -r requirements.txt; pip3 install --user streamlit; echo '✅ Packages installed and Requirements met'",
+  "onCreateCommand": "pip3 install uv; uv venv",
+  "updateContentCommand": "[ -f packages.txt ] && sudo apt update && sudo apt upgrade -y &&  sudo xargs apt install -y <packages.txt; [ -f requirements.txt ] && uv pip install -r requirements.txt; uv pip install streamlit; echo '✅ Packages installed and Requirements met'",
   "postAttachCommand": {
-    "server": "streamlit run Hello.py --server.enableCORS false --server.enableXsrfProtection false"
+    "server": "source ${containerWorkspaceFolder}/.venv/bin/activate; streamlit run %s --server.enableCORS false --server.enableXsrfProtection false"
   },
   "portsAttributes": {
     "8501": {
